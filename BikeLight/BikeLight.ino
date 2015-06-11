@@ -4,7 +4,7 @@
 #define PIN1 2
 #define COUNT1 35
 #define PIN2 3
-#define COUNT2 42
+#define COUNT2 13
 #define PIN3 4
 #define COUNT3 42
 
@@ -41,6 +41,7 @@ void setup()
   led3.show(); 
   pinMode(buttonPin, INPUT); 
    Serial.begin(9600);
+
 }
 
 
@@ -75,7 +76,7 @@ void loop ()
   // save the current state as the last state, 
   //for next time through the loop
   lastButtonState = buttonState;
-
+   topsolidsideblink();
   modechange();
 
   if (mode == 0) {     
@@ -112,6 +113,54 @@ colorThree = YELLOW;
   }
   }
 }
+
+void topsolid()
+{
+  
+    for (int i=0; i<COUNT2; i++)
+  {
+    led2.setPixelColor(i, 0xFF0000);
+  }
+  
+}
+
+void topsolidsideblink()
+{
+      for (int i=2; i<11; i++)
+  {
+    led2.setPixelColor(i, 0x220000);
+  }
+  int tssbpreviousMillis = 0;
+  long tssbinterval = 5000;  
+  int tssbState = LOW; 
+  if(millis() - tssbpreviousMillis > tssbinterval) {
+    // save the last time you blinked the LED 
+  
+      Serial.print("\n");
+      Serial.println(tssbpreviousMillis);
+      Serial.println(millis());
+          tssbpreviousMillis = millis(); 
+    // if the LED is off turn it on and vice-versa:
+    if (tssbState == LOW){
+    led2.setPixelColor(0, 0xFF0000);
+    led2.setPixelColor(1, 0x000000);
+    led2.setPixelColor(11, 0x000000);
+    led2.setPixelColor(12, 0xFF0000);
+    showLEDs();
+    tssbState = HIGH;
+    } else {
+    led2.setPixelColor(0, 0x000000);
+    led2.setPixelColor(1, 0xFF0000);
+    led2.setPixelColor(11, 0xFF0000);
+    led2.setPixelColor(12, 0x000000);
+    tssbState = LOW;
+    showLEDs();
+  }
+
+  
+}
+}
+
 void toponlysolid()
 {
   
