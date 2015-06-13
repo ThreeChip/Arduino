@@ -25,6 +25,10 @@ const int buttonPin = 12;     // the number of the pushbutton pin
 int lastButtonState = 0;
 int buttonState = 0;
 int buttonPushCounter = 0;
+long tssbpreviousMillis = 0;
+int tssbState = LOW; 
+long altpreviousMillis = 0;
+int altState = LOW;
 
 Adafruit_NeoPixel led1 = Adafruit_NeoPixel(COUNT1, PIN1, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel led2 = Adafruit_NeoPixel(COUNT2, PIN2, NEO_GRB + NEO_KHZ800);
@@ -51,10 +55,7 @@ void clearLEDs()
   {
     led1.setPixelColor(i, 0);
   }
-    for (int i=0; i<COUNT2; i++)
-  {
-    led2.setPixelColor(i, 0);
-  }
+    
     for (int i=0; i<COUNT3; i++)
   {
     led3.setPixelColor(i, 0);
@@ -76,11 +77,22 @@ void loop ()
   // save the current state as the last state, 
   //for next time through the loop
   lastButtonState = buttonState;
-   topsolidsideblink();
+   
   modechange();
 
   if (mode == 0) {     
-  clearLEDs();
+    for (int i=0; i<COUNT1; i++)
+  {
+    led1.setPixelColor(i, 0);
+  }
+      for (int i=0; i<COUNT2; i++)
+  {
+    led2.setPixelColor(i, 0);
+  }
+    for (int i=0; i<COUNT3; i++)
+  {
+    led3.setPixelColor(i, 0);
+  }
   showLEDs();
   }
   else if (mode == 1) {
@@ -89,13 +101,16 @@ void loop ()
   }
   else if (mode == 2) {
     alternate();
+    topsolidsideblink();
 
   }
   else if (mode == 3) {
     dimred();
+    topsolidsideblink();
   }
   else if (mode == 4) {
     fullred();
+    topsolidsideblink();
 
 
   }
@@ -104,12 +119,14 @@ colorOne = YELLOW;
 colorTwo = YELLOW;
 colorThree = YELLOW;
   slowstrobe();
+  topsolidsideblink();
   }
   else if (mode == 6) {
   for (int i=0; i<COUNT2; i++)
   {
     led1.setPixelColor(i, 0xFFFFFF);
     showLEDs();
+    topsolidsideblink();
   }
   }
 }
@@ -126,34 +143,43 @@ void topsolid()
 
 void topsolidsideblink()
 {
-      for (int i=2; i<11; i++)
+      for (int i=3; i<10; i++)
   {
-    led2.setPixelColor(i, 0x220000);
+    led2.setPixelColor(i, 0xFF0000);
   }
-  int tssbpreviousMillis = 0;
-  long tssbinterval = 5000;  
-  int tssbState = LOW; 
+  
+  long tssbinterval = 200;
+
   if(millis() - tssbpreviousMillis > tssbinterval) {
     // save the last time you blinked the LED 
   
       Serial.print("\n");
       Serial.println(tssbpreviousMillis);
       Serial.println(millis());
+      Serial.println(tssbState);
           tssbpreviousMillis = millis(); 
+      Serial.print("New prevMillis\n");
+      Serial.println(tssbpreviousMillis);
     // if the LED is off turn it on and vice-versa:
     if (tssbState == LOW){
     led2.setPixelColor(0, 0xFF0000);
     led2.setPixelColor(1, 0x000000);
-    led2.setPixelColor(11, 0x000000);
-    led2.setPixelColor(12, 0xFF0000);
+    led2.setPixelColor(2, 0xFF0000);
+    led2.setPixelColor(10, 0x000000);
+    led2.setPixelColor(11, 0xFF0000);
+    led2.setPixelColor(12, 0x000000);
     showLEDs();
     tssbState = HIGH;
+    Serial.print("LOW\n");
     } else {
     led2.setPixelColor(0, 0x000000);
     led2.setPixelColor(1, 0xFF0000);
-    led2.setPixelColor(11, 0xFF0000);
-    led2.setPixelColor(12, 0x000000);
+    led2.setPixelColor(2, 0x000000);
+    led2.setPixelColor(10, 0xFF0000);
+    led2.setPixelColor(11, 0x000000);
+    led2.setPixelColor(12, 0xFF0000);
     tssbState = LOW;
+    Serial.print("HIGH\n");
     showLEDs();
   }
 
@@ -164,51 +190,57 @@ void topsolidsideblink()
 void toponlysolid()
 {
   
-  for (int i=0; i<COUNT1; i++)
+for (int i=0; i<13; i++)
   {
-    led1.setPixelColor(i, 0);
+    led2.setPixelColor(i, 0xFF0000);
   }
   
-     for (int i=11; i<24; i++)
-  {
-    led1.setPixelColor(i, 0xFF0000);
-  }
+
   led1.setPixelColor(1, 0xFF0000);
-  led1.setPixelColor(33, 0xFF0000);
+  led1.setPixelColor(20, 0xFF0000);
   
   showLEDs();
 }
 void alternate()
 {
- clearLEDs();
-  
-     for (int i=10; i<24; i++)
-  {
-    led1.setPixelColor(i, 0xFF0000);
-  }
+ 
   
   
+    long altinterval = 400;
+
+  if(millis() - altpreviousMillis > altinterval) {
+
+          altpreviousMillis = millis(); 
+
+    if (altState == LOW){
+      clearLEDs();
+           
     for (int i=0; i<11; i++)
   {
     led1.setPixelColor(i, 0xFF0000);
   }
-    for (int i=24; i<36; i++)
+    for (int i=11; i<23; i++)
   {
     led1.setPixelColor(i, 0x440000);
   }
   showLEDs();
-  delay(250);
+    altState = HIGH;
+    } else {
+      clearLEDs();
+          
       for (int i=0; i<11; i++)
   {
     led1.setPixelColor(i, 0x440000);
   }
-    for (int i=24; i<36; i++)
+    for (int i=11; i<23; i++)
   {
     led1.setPixelColor(i, 0xFF0000);
   }
   showLEDs();
-  delay(250);
+    altState = LOW;
+  }
   
+  }
 }
 
 void dimred()
@@ -298,7 +330,7 @@ buttonState = digitalRead(buttonPin);
 
 if (buttonState != lastButtonState) {
     if (buttonState == HIGH) {
-     if (mode >= 6) {
+     if (mode >= 5) {
       mode = 0;
      }
      else
