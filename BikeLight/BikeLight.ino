@@ -275,20 +275,14 @@ void slowstrobe()
   led1.setPixelColor(randLED1, colorOne);
   led1.setPixelColor(randLED2, colorTwo);
   led1.setPixelColor(randLED3, colorThree);
-       for (int i=10; i<24; i++)
-  {
-    led1.setPixelColor(i, 0xFF0000);
-  }
+
   showLEDs();
   delay(75);
   for (int i=0; i<COUNT1; i++)
   {
     led1.setPixelColor(i, 0x500000);
   }
-       for (int i=10; i<24; i++)
-  {
-    led1.setPixelColor(i, 0xFF0000);
-  }
+
   showLEDs();
   
 }
@@ -305,19 +299,11 @@ void faststrobe()
   led1.setPixelColor(randLED1, colorOne);
   led1.setPixelColor(randLED2, colorTwo);
   led1.setPixelColor(randLED3, colorThree);
-       for (int i=10; i<24; i++)
-  {
-    led1.setPixelColor(i, 0xFF0000);
-  }
   showLEDs();
   delay(10);
   for (int i=0; i<COUNT1; i++)
   {
     led1.setPixelColor(i, 0x500000);
-  }
-       for (int i=10; i<24; i++)
-  {
-    led1.setPixelColor(i, 0xFF0000);
   }
   showLEDs();
   
