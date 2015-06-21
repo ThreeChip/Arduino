@@ -73,13 +73,13 @@ void setup()
   // set the font size
   TFTscreen.setTextSize(2);
   // write the text to the top left corner of the screen
-  TFTscreen.text("Mode:\n ", 0, 0);
+  TFTscreen.text("Mode\n ", 50, 0);
   // ste the font size very large for the loop
   TFTscreen.setTextSize(10);
   modenumstr = String(mode);
   modenumstr.toCharArray(modenumchar, 2);
   TFTscreen.stroke(255, 255, 255);
-  TFTscreen.text(modenumchar, 0, 20);
+  TFTscreen.text(modenumchar, 50, 20);
 
 }
 
@@ -260,6 +260,13 @@ void alternate()
   }
   showLEDs();
     altState = HIGH;
+    
+    TFTscreen.stroke(0,0,0);
+    TFTscreen.fill(0,0,255);
+    TFTscreen.rect(0,0,35,TFTscreen.height());
+    TFTscreen.stroke(0,0,0);
+    TFTscreen.fill(0,0,0);
+    TFTscreen.rect(125,0,35,TFTscreen.height());
     } else {
       clearLEDs();
           
@@ -273,6 +280,13 @@ void alternate()
   }
   showLEDs();
     altState = LOW;
+    
+    TFTscreen.stroke(0,0,0);
+    TFTscreen.fill(0,0,0);
+    TFTscreen.rect(0,0,35,TFTscreen.height());
+    TFTscreen.stroke(0,0,0);
+    TFTscreen.fill(0,0,255);
+    TFTscreen.rect(125,0,35,TFTscreen.height());
   }
   
   }
@@ -363,11 +377,18 @@ if (buttonState != lastButtonState) {
       Serial.print("Current Mode:  ");
       Serial.println(mode);
       TFTscreen.stroke(0,0,0);
-      TFTscreen.text(modenumchar, 0, 20);
+      TFTscreen.text(modenumchar, 50, 20);
       modenumstr = String(mode);
       modenumstr.toCharArray(modenumchar, 2);
       TFTscreen.stroke(255, 255, 255);
-      TFTscreen.text(modenumchar, 0, 20);
+      TFTscreen.text(modenumchar, 50, 20);
+      
+    TFTscreen.stroke(0,0,0);
+    TFTscreen.fill(0,0,0);
+    TFTscreen.rect(0,0,35,TFTscreen.height());
+    TFTscreen.stroke(0,0,0);
+    TFTscreen.fill(0,0,0);
+    TFTscreen.rect(125,0,35,TFTscreen.height());
   //delay(200);
   //TFTscreen.stroke(0,0,0);
   //TFTscreen.text(mode, 0, 20);
