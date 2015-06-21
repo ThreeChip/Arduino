@@ -1,6 +1,20 @@
 #include <Adafruit_NeoPixel.h>
 #include "WS2812_Definitions.h"
 
+#include <TFT.h>  // Arduino LCD library
+#include <SPI.h>
+
+// pin definition for the Uno
+#define cs   10
+#define dc   9
+#define rst  8
+
+// create an instance of the library
+TFT TFTscreen = TFT(cs, dc, rst);
+
+// char array to print to the screen
+char sensorPrintout[4];
+
 #define PIN1 2
 #define COUNT1 35
 #define PIN2 3
@@ -19,7 +33,9 @@ int randLED2 = 0;
 int randLED3 = 0;
 int randColor = 0;
 long incomingByte = 0;
-long mode = 1;
+int mode = 1;
+char modenumchar[2];
+String modenumstr;
 long count;
 const int buttonPin = 12;     // the number of the pushbutton pin
 int lastButtonState = 0;
@@ -45,6 +61,25 @@ void setup()
   led3.show(); 
   pinMode(buttonPin, INPUT); 
    Serial.begin(9600);
+   
+     TFTscreen.begin();
+
+  // clear the screen with a black background
+  TFTscreen.background(0, 0, 0);
+
+  // write the static text to the screen
+  // set the font color to white
+  TFTscreen.stroke(255, 255, 255);
+  // set the font size
+  TFTscreen.setTextSize(2);
+  // write the text to the top left corner of the screen
+  TFTscreen.text("Mode:\n ", 0, 0);
+  // ste the font size very large for the loop
+  TFTscreen.setTextSize(10);
+  modenumstr = String(mode);
+  modenumstr.toCharArray(modenumchar, 2);
+  TFTscreen.stroke(255, 255, 255);
+  TFTscreen.text(modenumchar, 0, 20);
 
 }
 
@@ -315,6 +350,7 @@ void modechange()
 buttonState = digitalRead(buttonPin);
 
 if (buttonState != lastButtonState) {
+
     if (buttonState == HIGH) {
      if (mode >= 5) {
       mode = 0;
@@ -326,7 +362,16 @@ if (buttonState != lastButtonState) {
       Serial.println("Mode Change");
       Serial.print("Current Mode:  ");
       Serial.println(mode);
-    } 
+      TFTscreen.stroke(0,0,0);
+      TFTscreen.text(modenumchar, 0, 20);
+      modenumstr = String(mode);
+      modenumstr.toCharArray(modenumchar, 2);
+      TFTscreen.stroke(255, 255, 255);
+      TFTscreen.text(modenumchar, 0, 20);
+  //delay(200);
+  //TFTscreen.stroke(0,0,0);
+  //TFTscreen.text(mode, 0, 20);
+  } 
   }
 }
 
